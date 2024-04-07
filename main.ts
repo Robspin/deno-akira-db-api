@@ -1,12 +1,12 @@
 import { Application, Router } from "https://deno.land/x/oak/mod.ts"
 import { neon } from 'npm:@neondatabase/serverless'
 import { drizzle } from 'npm:drizzle-orm/neon-http'
+import { eq } from 'npm:drizzle-orm'
 import { env } from './constants.ts'
 import * as schema from "./db/schema.ts"
 import { running } from './akira-art.ts'
-import { isAuthorized, setHeaders } from "./helpers.ts"
+import { isAuthorized } from "./helpers.ts"
 import { strategies } from './db/schema.ts'
-import { eq } from 'drizzle-orm'
 
 const sql = neon(env.DB_CONNECTION_STRING!)
 const db = drizzle(sql, { schema })
@@ -55,7 +55,7 @@ router.put('/strategies/:name', async (ctx) => {
     where: ((strat, { eq }) => eq(strat.name, ctx.params.name ?? 'null')),
   })
 
-  setHeaders(ctx)
+  // setHeaders(ctx)
   ctx.response.body = {
     success: true,
     data: data,
