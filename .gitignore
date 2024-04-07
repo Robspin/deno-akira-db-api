@@ -1,2 +1,8 @@
 .env
 .idea
+node_modules
+package.json
+package-lock.json
+db/migrations
+db/migrate.ts
+db/seed.ts
