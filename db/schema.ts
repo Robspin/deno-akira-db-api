@@ -1,5 +1,5 @@
-// import { integer, pgEnum, boolean, pgTable, text, timestamp, serial, uniqueIndex, varchar, uuid } from 'npm:drizzle-orm/pg-core'
-import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import { boolean, pgTable, text, timestamp, uuid } from 'npm:drizzle-orm/pg-core'
+// import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
 
 export const strategies = pgTable('strategies', {
     id: uuid('id').primaryKey(),
