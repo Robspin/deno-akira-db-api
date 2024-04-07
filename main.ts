@@ -5,6 +5,8 @@ import { env } from './constants.ts'
 import * as schema from "./db/schema.ts"
 import { running } from './akira-art.ts'
 import { isAuthorized } from "./helpers.ts";
+import { strategies } from './db/schema.ts'
+import { eq } from 'drizzle-orm'
 
 const sql = neon(env.DB_CONNECTION_STRING!)
 const db = drizzle(sql, { schema })
@@ -30,6 +32,25 @@ router.get('/strategies', async (ctx) => {
 
 router.get('/strategies/:name', async (ctx) => {
   if (!isAuthorized(ctx)) return
+  const data = await db.query.strategies.findFirst({
+    where: ((strat, { eq }) => eq(strat.name, ctx.params.name ?? 'null')),
+  })
+
+  ctx.response.body = {
+    success: true,
+    data: data,
+    message: 'Successfully fetched data'
+  }
+})
+
+router.put('/strategies/:name', async (ctx) => {
+  if (!isAuthorized(ctx)) return
+  const body: { active: boolean, inTrade: boolean } = await ctx.request.body.json()
+
+  await db.update(strategies).set({
+    ...body,
+    updatedAt: new Date()
+  }).where(eq(strategies.name, ctx.params.name ?? 'null'))
   const data = await db.query.strategies.findFirst({
     where: ((strat, { eq }) => eq(strat.name, ctx.params.name ?? 'null')),
   })
