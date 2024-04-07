@@ -4,7 +4,7 @@ import { drizzle } from 'npm:drizzle-orm/neon-http'
 import { env } from './constants.ts'
 import * as schema from "./db/schema.ts"
 import { running } from './akira-art.ts'
-import { isAuthorized } from "./helpers.ts";
+import { isAuthorized, setHeaders } from "./helpers.ts"
 import { strategies } from './db/schema.ts'
 import { eq } from 'drizzle-orm'
 
@@ -55,6 +55,7 @@ router.put('/strategies/:name', async (ctx) => {
     where: ((strat, { eq }) => eq(strat.name, ctx.params.name ?? 'null')),
   })
 
+  setHeaders(ctx)
   ctx.response.body = {
     success: true,
     data: data,

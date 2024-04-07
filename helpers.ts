@@ -13,7 +13,7 @@ export const isAuthorized = (ctx: any) => {
 export const setHeaders = (ctx: any) => {
     ctx.response.headers.set("Access-Control-Allow-Origin", "*")
     ctx.response.headers.set("Cache-Control", "no-cache")
-    ctx.response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+    ctx.response.headers.set("Access-Control-Allow-Methods", "GET, PUT, OPTIONS")
     ctx.response.headers.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
 }
 
