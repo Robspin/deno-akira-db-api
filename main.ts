@@ -1,4 +1,5 @@
 import { Application, Router } from "https://deno.land/x/oak/mod.ts"
+import { v4 as uuidv4 } from 'npm:uuid'
 import { neon } from 'npm:@neondatabase/serverless'
 import { drizzle } from 'npm:drizzle-orm/neon-http'
 import { eq } from 'npm:drizzle-orm'
@@ -6,7 +7,8 @@ import { env } from './constants.ts'
 import * as schema from "./db/schema.ts"
 import { running } from './akira-art.ts'
 import { isAuthorized } from "./helpers.ts"
-import { strategies } from './db/schema.ts'
+import { strategies, trades } from './db/schema.ts'
+import { TradePostData } from './types.ts'
 
 const sql = neon(env.DB_CONNECTION_STRING!)
 const db = drizzle(sql, { schema })
@@ -55,7 +57,39 @@ router.put('/strategies/:name', async (ctx) => {
     where: ((strat, { eq }) => eq(strat.name, ctx.params.name ?? 'null')),
   })
 
-  // setHeaders(ctx)
+  ctx.response.body = {
+    success: true,
+    data: data,
+    message: 'Successfully fetched data'
+  }
+})
+
+router.post('/trades', async (ctx) => {
+  if (!isAuthorized(ctx)) return
+  const body: TradePostData = await ctx.request.body.json()
+
+  const id = uuidv4()
+
+  await db.insert(trades).values({
+    id,
+    ...body
+  })
+
+  const data = await db.query.trades.findFirst({
+    where: ((trade, { eq }) => eq(trade.id, id)),
+  })
+
+  ctx.response.body = {
+    success: true,
+    data: data,
+    message: 'Successfully created trade'
+  }
+})
+
+router.get('/trades', async (ctx) => {
+  if (!isAuthorized(ctx)) return
+  const data = await db.query.trades.findMany()
+
   ctx.response.body = {
     success: true,
     data: data,
