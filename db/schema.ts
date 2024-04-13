@@ -21,7 +21,7 @@ export const trades = pgTable('trades', {
     currentBtcPrice:  text('currentBtcPrice').notNull(),
     exitPrice: text('exit_price'),
     extAccountSize: text('exit_account_size'),
-    strategyName: text('strategy_name').notNull().references(() => strategies.name),
+    strategyName: text('strategy_name').notNull(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     exitedTradeAt: timestamp('exited_trade_at'),
