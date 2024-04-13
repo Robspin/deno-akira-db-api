@@ -67,9 +67,6 @@ router.put('/strategies/:name', async (ctx) => {
 router.post('/trades', async (ctx) => {
   if (!isAuthorized(ctx)) return
   const body: TradePostData = await ctx.request.body.json()
-
-  console.log(body)
-
   const id = uuidv4()
 
   await db.insert(trades).values({
@@ -91,6 +88,19 @@ router.post('/trades', async (ctx) => {
 router.get('/trades', async (ctx) => {
   if (!isAuthorized(ctx)) return
   const data = await db.query.trades.findMany()
+
+  ctx.response.body = {
+    success: true,
+    data: data,
+    message: 'Successfully fetched data'
+  }
+})
+
+router.get('/strategies/:name/trades', async (ctx) => {
+  if (!isAuthorized(ctx)) return
+  const data = await db.query.trades.findMany({
+    where: ((trade, { eq }) => eq(trade.strategyName, ctx.params.name ?? 'null')),
+  })
 
   ctx.response.body = {
     success: true,

@@ -1,5 +1,5 @@
-import { boolean, pgTable, text, timestamp, uuid } from 'npm:drizzle-orm/pg-core'
-// import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+// import { boolean, pgTable, text, timestamp, uuid } from 'npm:drizzle-orm/pg-core'
+import { boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
 
 export const strategies = pgTable('strategies', {
     id: uuid('id').primaryKey(),
@@ -21,7 +21,7 @@ export const trades = pgTable('trades', {
     currentBtcPrice:  text('currentBtcPrice').notNull(),
     exitPrice: text('exit_price'),
     extAccountSize: text('exit_account_size'),
-    strategyName: text('strategy_name').notNull(),
+    strategyName: text('strategy_name').notNull().references(() => strategies.name),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
     exitedTradeAt: timestamp('exited_trade_at'),
