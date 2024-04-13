@@ -68,6 +68,8 @@ router.post('/trades', async (ctx) => {
   if (!isAuthorized(ctx)) return
   const body: TradePostData = await ctx.request.body.json()
 
+  console.log(body)
+
   const id = uuidv4()
 
   await db.insert(trades).values({
