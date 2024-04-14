@@ -2,14 +2,13 @@ import { Application, Router } from "https://deno.land/x/oak/mod.ts"
 import { v4 as uuidv4 } from 'npm:uuid'
 import { neon } from 'npm:@neondatabase/serverless'
 import { drizzle } from 'npm:drizzle-orm/neon-http'
-import { eq } from 'npm:drizzle-orm'
+import { eq, desc } from 'npm:drizzle-orm'
 import { env } from './constants.ts'
 import * as schema from "./db/schema.ts"
 import { running } from './akira-art.ts'
 import { isAuthorized } from "./helpers.ts"
 import { strategies, trades } from './db/schema.ts'
 import { TradePostData, TradeUpdateData } from './types.ts'
-import { desc } from 'drizzle-orm'
 
 const sql = neon(env.DB_CONNECTION_STRING!)
 const db = drizzle(sql, { schema })
