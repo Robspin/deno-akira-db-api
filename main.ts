@@ -9,6 +9,7 @@ import { running } from './akira-art.ts'
 import { isAuthorized } from "./helpers.ts"
 import { strategies, trades } from './db/schema.ts'
 import { TradePostData, TradeUpdateData } from './types.ts'
+import { desc } from 'drizzle-orm'
 
 const sql = neon(env.DB_CONNECTION_STRING!)
 const db = drizzle(sql, { schema })
@@ -100,6 +101,7 @@ router.get('/strategies/:name/trades', async (ctx) => {
   if (!isAuthorized(ctx)) return
   const data = await db.query.trades.findMany({
     where: ((trade, { eq }) => eq(trade.strategyName, ctx.params.name ?? 'null')),
+    orderBy: [desc(trades.createdAt)]
   })
 
   ctx.response.body = {
