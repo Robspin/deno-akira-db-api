@@ -8,7 +8,7 @@ import * as schema from "./db/schema.ts"
 import { running } from './akira-art.ts'
 import { isAuthorized } from "./helpers.ts"
 import { strategies, trades } from './db/schema.ts'
-import { TradePostData } from './types.ts'
+import { TradePostData, TradeUpdateData } from './types.ts'
 
 const sql = neon(env.DB_CONNECTION_STRING!)
 const db = drizzle(sql, { schema })
@@ -80,7 +80,7 @@ router.post('/trades', async (ctx) => {
 
   ctx.response.body = {
     success: true,
-    data: data,
+    data,
     message: 'Successfully created trade'
   }
 })
@@ -91,7 +91,7 @@ router.get('/trades', async (ctx) => {
 
   ctx.response.body = {
     success: true,
-    data: data,
+    data,
     message: 'Successfully fetched data'
   }
 })
@@ -104,7 +104,7 @@ router.get('/strategies/:name/trades', async (ctx) => {
 
   ctx.response.body = {
     success: true,
-    data: data,
+    data,
     message: 'Successfully fetched data'
   }
 })
@@ -117,23 +117,31 @@ router.get('/trades/orders/:id', async (ctx) => {
 
   ctx.response.body = {
     success: true,
-    data: data,
+    data,
     message: 'Successfully fetched data'
   }
 })
 
-// router.put('/trades/orders/:id', async (ctx) => {
-//   if (!isAuthorized(ctx)) return
-//   const data = await db.query.trades.findFirst({
-//     where: ((trade, { eq }) => eq(trade.orderId, ctx.params.id ?? 'null')),
-//   })
-//
-//   ctx.response.body = {
-//     success: true,
-//     data: data,
-//     message: 'Successfully fetched data'
-//   }
-// })
+router.put('/trades/orders/:id', async (ctx) => {
+  if (!isAuthorized(ctx)) return
+  const body: TradeUpdateData = await ctx.request.body.json()
+
+  await db.update(trades).set({
+    ...body,
+    updatedAt: new Date(),
+    exitedTradeAt: new Date()
+  }).where(eq(trades.orderId, ctx.params.id ?? 'null'))
+
+  const data = await db.query.trades.findFirst({
+    where: ((trade, { eq }) => eq(trade.orderId, ctx.params.id ?? 'null')),
+  })
+
+  ctx.response.body = {
+    success: true,
+    data: data,
+    message: 'Successfully fetched data'
+  }
+})
 
 
 app.use(router.routes())

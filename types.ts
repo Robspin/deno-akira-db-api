@@ -9,6 +9,12 @@ export type TradePostData = {
     strategyName: string
 }
 
+export type TradeUpdateData = {
+    exitPrice?: string
+    exitAccountSize?: string
+    exitedTradeAt?: string
+}
+
 export type Trade = {
     orderId: string
     direction: 'LONG' | 'SHORT'
