@@ -5,7 +5,8 @@
       "npm:@neondatabase/serverless": "npm:@neondatabase/serverless@0.9.0",
       "npm:@neondatabase/serverless@^0.9.0": "npm:@neondatabase/serverless@0.9.0",
       "npm:drizzle-orm": "npm:drizzle-orm@0.30.7_@neondatabase+serverless@0.9.0",
-      "npm:drizzle-orm@^0.30.7": "npm:drizzle-orm@0.30.7_@neondatabase+serverless@0.9.0"
+      "npm:drizzle-orm@^0.30.7": "npm:drizzle-orm@0.30.7_@neondatabase+serverless@0.9.0",
+      "npm:uuid": "npm:uuid@9.0.1"
     },
     "npm": {
       "@neondatabase/serverless@0.9.0": {
@@ -67,6 +68,10 @@
         "dependencies": {
           "xtend": "xtend@4.0.2"
         }
+      },
+      "uuid@9.0.1": {
+        "integrity": "sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==",
+        "dependencies": {}
       },
       "xtend@4.0.2": {
         "integrity": "sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==",

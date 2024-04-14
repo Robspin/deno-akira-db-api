@@ -109,6 +109,32 @@ router.get('/strategies/:name/trades', async (ctx) => {
   }
 })
 
+router.get('/trades/orders/:id', async (ctx) => {
+  if (!isAuthorized(ctx)) return
+  const data = await db.query.trades.findFirst({
+    where: ((trade, { eq }) => eq(trade.orderId, ctx.params.id ?? 'null')),
+  })
+
+  ctx.response.body = {
+    success: true,
+    data: data,
+    message: 'Successfully fetched data'
+  }
+})
+
+// router.put('/trades/orders/:id', async (ctx) => {
+//   if (!isAuthorized(ctx)) return
+//   const data = await db.query.trades.findFirst({
+//     where: ((trade, { eq }) => eq(trade.orderId, ctx.params.id ?? 'null')),
+//   })
+//
+//   ctx.response.body = {
+//     success: true,
+//     data: data,
+//     message: 'Successfully fetched data'
+//   }
+// })
+
 
 app.use(router.routes())
 app.use(router.allowedMethods())

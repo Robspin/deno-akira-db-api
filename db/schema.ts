@@ -14,7 +14,7 @@ export const strategies = pgTable('strategies', {
 export const trades = pgTable('trades', {
     id: uuid('id').primaryKey(),
     direction: text('direction').notNull(),
-    orderId: text('trade_id').notNull(),
+    orderId: text('order_id').notNull(),
     entryPrice: text('entry_price').notNull(),
     entryAccountSize: text('entry_account_size').notNull(),
     size:  text('size').notNull(),
